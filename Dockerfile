@@ -20,6 +20,7 @@ WORKDIR /cherrypick
 
 COPY --link ["pnpm-lock.yaml", "pnpm-workspace.yaml", "package.json", "./"]
 COPY --link ["scripts", "./scripts"]
+COPY --link ["packages/megalodon/package.json", "./packages/megalodon/"]
 COPY --link ["packages/backend/package.json", "./packages/backend/"]
 COPY --link ["packages/frontend/package.json", "./packages/frontend/"]
 COPY --link ["packages/sw/package.json", "./packages/sw/"]
@@ -81,6 +82,7 @@ COPY --chown=cherrypick:cherrypick --from=target-builder /cherrypick/packages/ba
 COPY --chown=cherrypick:cherrypick --from=native-builder /cherrypick/built ./built
 COPY --chown=cherrypick:cherrypick --from=native-builder /cherrypick/packages/backend/built ./packages/backend/built
 COPY --chown=cherrypick:cherrypick --from=native-builder /cherrypick/fluent-emojis /cherrypick/fluent-emojis
+COPY --chown=cherrypick:cherrypick --from=native-builder /sharkey/packages/megalodon/lib ./packages/megalodon/lib
 COPY --chown=cherrypick:cherrypick . ./
 
 ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
