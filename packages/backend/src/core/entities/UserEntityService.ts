@@ -367,6 +367,8 @@ export class UserEntityService implements OnModuleInit {
 			.getMany() : [];
 		const profile = opts.detail ? (opts.userProfile ?? await this.userProfilesRepository.findOneByOrFail({ userId: user.id })) : null;
 
+		const mastoapi = opts.userProfile ?? await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
+
 		const followingCount = profile == null ? null :
 			(profile.ffVisibility === 'public') || isMe ? user.followingCount :
 			(profile.ffVisibility === 'followers') && (relation && relation.isFollowing) ? user.followingCount :
@@ -400,6 +402,7 @@ export class UserEntityService implements OnModuleInit {
 				flipH: ud.flipH || undefined,
 				url: decorations.find(d => d.id === ud.id)!.url,
 			}))) : [],
+			description: mastoapi!.description,
 			isBot: user.isBot,
 			isCat: user.isCat,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
@@ -435,7 +438,6 @@ export class UserEntityService implements OnModuleInit {
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended,
-				description: profile!.description,
 				location: profile!.location,
 				birthday: profile!.birthday,
 				lang: profile!.lang,
