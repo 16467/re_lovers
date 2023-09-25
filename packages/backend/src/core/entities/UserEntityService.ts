@@ -400,8 +400,8 @@ export class UserEntityService implements OnModuleInit {
 				flipH: ud.flipH || undefined,
 				url: decorations.find(d => d.id === ud.id)!.url,
 			}))) : [],
-			isBot: user.isBot,
-			isCat: user.isCat,
+			isBot: user.isBot ?? falsy,
+			isCat: user.isCat ?? falsy,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
