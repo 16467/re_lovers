@@ -343,7 +343,7 @@ export class NoteEntityService implements OnModuleInit {
 			noteEditHistory: note.noteEditHistory.length ? note.noteEditHistory : undefined,
 			userId: note.userId,
 			user: this.userEntityService.pack(note.user ?? note.userId, me, {
-				detail: false,
+				detail: true,
 			}),
 			text: text,
 			cw: note.cw,
