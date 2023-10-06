@@ -355,6 +355,32 @@ export class UserEntityService implements OnModuleInit {
 
 		const user = typeof src === 'object' ? src : await this.usersRepository.findOneByOrFail({ id: src });
 
+		// migration
+		if (user.avatarId != null && user.avatarUrl === null) {
+			const avatar = await this.driveFilesRepository.findOneByOrFail({ id: user.avatarId });
+			user.avatarUrl = this.driveFileEntityService.getPublicUrl(avatar, 'avatar');
+			this.usersRepository.update(user.id, {
+				avatarUrl: user.avatarUrl,
+				avatarBlurhash: avatar.blurhash,
+			});
+		}
+		if (user.bannerId != null && user.bannerUrl === null) {
+			const banner = await this.driveFilesRepository.findOneByOrFail({ id: user.bannerId });
+			user.bannerUrl = this.driveFileEntityService.getPublicUrl(banner);
+			this.usersRepository.update(user.id, {
+				bannerUrl: user.bannerUrl,
+				bannerBlurhash: banner.blurhash,
+			});
+		}
+		if (user.backgroundId != null && user.backgroundUrl === null) {
+			const background = await this.driveFilesRepository.findOneByOrFail({ id: user.backgroundId });
+			user.backgroundUrl = this.driveFileEntityService.getPublicUrl(background);
+			this.usersRepository.update(user.id, {
+				backgroundUrl: user.backgroundUrl,
+				backgroundBlurhash: background.blurhash,
+			});
+		}
+
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
 		const iAmModerator = me ? await this.roleService.isModerator(me as MiUser) : false;
@@ -435,6 +461,8 @@ export class UserEntityService implements OnModuleInit {
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
 				bannerUrl: user.bannerUrl,
 				bannerBlurhash: user.bannerBlurhash,
+				backgroundUrl: user.backgroundUrl,
+				backgroundBlurhash: user.backgroundBlurhash,
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended,
@@ -481,6 +509,7 @@ export class UserEntityService implements OnModuleInit {
 			...(opts.detail && isMe ? {
 				avatarId: user.avatarId,
 				bannerId: user.bannerId,
+				backgroundId: user.backgroundId,
 				isModerator: isModerator,
 				isAdmin: isAdmin,
 				injectFeaturedNote: profile!.injectFeaturedNote,
