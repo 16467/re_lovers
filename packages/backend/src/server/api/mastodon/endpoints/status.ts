@@ -14,8 +14,9 @@ function normalizeQuery(data: any) {
 export class ApiStatusMastodon {
 	private fastify: FastifyInstance;
 
-	constructor(fastify: FastifyInstance) {
+	constructor(fastify: FastifyInstance, mastoconverter: MastoConverters) {
 		this.fastify = fastify;
+		this.mastoconverter = mastoconverter;
 	}
 
 	public async getStatus() {

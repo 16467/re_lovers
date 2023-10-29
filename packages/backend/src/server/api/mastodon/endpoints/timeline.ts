@@ -32,7 +32,7 @@ export function argsToBools(q: ParsedUrlQuery) {
 export class ApiTimelineMastodon {
 	private fastify: FastifyInstance;
 
-	constructor(fastify: FastifyInstance) {
+	constructor(fastify: FastifyInstance, config: Config, private mastoconverter: MastoConverters) {
 		this.fastify = fastify;
 	}
 
