@@ -85,7 +85,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatusRebloggedBy(_request.params.id);
-				reply.send(data.data.map((account: Entity.Account) => this.mastoconverter.convertAccount(account)));
+				reply.send(await Promise.all(data.data.map(async (account: Entity.Account) => await this.mastoconverter.convertAccount(account))));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -100,7 +100,7 @@ export class ApiStatusMastodon {
 			const client = getClient(BASE_URL, accessTokens);
 			try {
 				const data = await client.getStatusFavouritedBy(_request.params.id);
-				reply.send(data.data.map((account: Entity.Account) => this.mastoconverter.convertAccount(account)));
+				reply.send(await Promise.all(data.data.map(async (account: Entity.Account) => await this.mastoconverter.convertAccount(account))));
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
