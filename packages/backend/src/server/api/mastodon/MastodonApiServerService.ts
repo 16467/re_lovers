@@ -296,7 +296,8 @@ export class MastodonApiServerService {
 			try {
 				const sharkId = _request.params.id;
 				const data = await client.getAccount(sharkId);
-				reply.send(convertAccount(data.data));
+				const account = await this.mastoConverter.convertAccount(data.data);
+				reply.send(account);
 			} catch (e: any) {
 				/* console.error(e);
 				console.error(e.response.data); */
