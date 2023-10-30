@@ -254,7 +254,7 @@ export class ApiTimelineMastodon {
 				const client = getClient(BASE_URL, accessTokens);
 				const params: any = _request.params;
 				const data = await client.deleteList(params.id);
-				reply.send(data.data);
+				reply.send({});
 			} catch (e: any) {
 				console.error(e);
 				console.error(e.response.data);
