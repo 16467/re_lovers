@@ -271,6 +271,18 @@ export class ApRendererService {
 	public async renderLike(noteReaction: MiNoteReaction, note: { uri: string | null }): Promise<ILike> {
 		const reaction = noteReaction.reaction;
 
+		if (meta.defaultLike && reaction.replaceAll(':', '') === meta.defaultLike.replaceAll(':', '')) {
+			const note = await this.notesRepository.findOneBy({ id: noteReaction.noteId });
+
+			if (note && note.userHost) {
+				const instance = await this.instancesRepository.findOneBy({ host: note.userHost });
+
+				if (instance && instance.softwareName === 'mastodon') isMastodon = true;
+				if (instance && instance.softwareName === 'akkoma')	isMastodon = true;
+				if (instance && instance.softwareName === 'pleroma') isMastodon = true;
+			}
+		}
+
 		const object: ILike = {
 			type: 'Like',
 			id: `${this.config.url}/likes/${noteReaction.id}`,
