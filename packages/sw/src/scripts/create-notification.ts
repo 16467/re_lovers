@@ -248,7 +248,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						badge: iconUrl('bell'),
 						data,
 					}];
-		
+
 				default:
 					return null;
 			}
@@ -291,7 +291,7 @@ export async function createEmptyNotification(): Promise<void> {
 		await globalThis.registration.showNotification(
 			(new URL(origin)).host,
 			{
-				body: `CherryPick v${_VERSION_}`,
+				body: `Re:Lovers v${_VERSION_}`,
 				silent: true,
 				badge: iconUrl('null'),
 				tag: 'read_notification',
