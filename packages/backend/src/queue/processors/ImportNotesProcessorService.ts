@@ -47,7 +47,7 @@ export class ImportNotesProcessorService {
 		if (!tweet.created_at.endsWith(new Date().getFullYear())) {
 			return false;
 		}
-	
+
 		return !tweet.full_text.startsWith('@');
 	}
 
@@ -98,7 +98,9 @@ export class ImportNotesProcessorService {
 			return;
 		}
 
-		if (job.data.type === 'Twitter' || file.name.startsWith('twitter') && file.name.endsWith('.zip')) {
+		const type = job.data.type;
+
+		if (type === 'Twitter' || file.name.startsWith('twitter') && file.name.endsWith('.zip')) {
 			const [path, cleanup] = await createTempDir();
 
 			this.logger.info(`Temp dir is ${path}`);
@@ -424,9 +426,9 @@ export class ImportNotesProcessorService {
 		try {
 			const date = new Date(tweet.created_at);
 			const textReplaceURLs = tweet.entities.urls && tweet.entities.urls.length > 0 ? await replaceTwitterUrls(tweet.full_text, tweet.entities.urls) : tweet.full_text;
-			const text = tweet.entities.user_mentions && tweet.entities.user_mentions.length > 0 ? await replaceTwitterMentions(textReplaceURLs, tweet.entities.user_mentions) : textReplaceURLs; 
+			const text = tweet.entities.user_mentions && tweet.entities.user_mentions.length > 0 ? await replaceTwitterMentions(textReplaceURLs, tweet.entities.user_mentions) : textReplaceURLs;
 			const files: MiDriveFile[] = [];
-			
+
 			if (tweet.extended_entities && this.isIterable(tweet.extended_entities.media)) {
 				for await (const file of tweet.extended_entities.media) {
 					if (file.video_info) {
