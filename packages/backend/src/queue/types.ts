@@ -112,7 +112,6 @@ export type DbAbuseReportJobData = MiAbuseUserReport;
 export type DbNoteImportToDbJobData = {
 	user: ThinUser;
 	target: any;
-	note?: MiNote['id'] | null;
 };
 
 export type DbKeyNoteImportToDbJobData = {
