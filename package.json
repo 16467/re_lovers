@@ -1,11 +1,11 @@
 {
 	"name": "Re:Lovers",
-	"version": "0.0.1_dev2",
+	"version": "0.0.1_dev3",
 	"basedMisskeyVersion": "2023.11.0",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kokonect-link/cherrypick.git"
+		"url": "https://github.com/164-life/re_lovers.git"
 	},
 	"packageManager": "pnpm@8.10.0",
 	"workspaces": [

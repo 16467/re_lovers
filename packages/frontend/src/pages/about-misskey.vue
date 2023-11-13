@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-panel class="about">
 					<div ref="containerEl" class="container" :class="{ playing: easterEggEngine != null }">
 						<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false" @load="iconLoaded" @click="gravity"/>
-						<div class="cherrypick">CherryPick</div>
+						<div class="cherrypick">Re:Lovers</div>
 						<div class="version" @click="whatIsNewCherryPick">v{{ version }}</div>
 						<div class="version" style="font-size: 11px;" @click="whatIsNewMisskey">v{{ basedMisskeyVersion }} (Based on Misskey)</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkButton primary rounded inline @click="iLoveCherryPick">I <Mfm text="$[jelly ❤]"/> #Re:Lovers</MkButton>
 				</div>
 				<FormSection>
-					<template #label>CherryPick</template>
+					<template #label>Re:Lovers</template>
 					<div class="_gaps_s">
 						<FormLink to="https://github.com/164-life/re_lovers" external>
 							<template #icon><i class="ti ti-code"></i></template>
