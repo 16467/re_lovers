@@ -117,7 +117,7 @@ function skipThisVersion() {
 }
 
 onMounted(() => {
-	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+	fetch('https://api.github.com/repos/164-life/re-lovers/releases', {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
