@@ -1,6 +1,6 @@
 import querystring from 'querystring';
 import { emojiRegexAtStartToEnd } from '@/misc/emoji-regex.js';
-import { convertId, IdConvertType as IdType, convertAccount, convertAttachment, convertPoll, convertStatus } from '../converters.js';
+import { convertId, IdConvertType as IdType, convertAccount, convertAttachment, convertPoll, convertStatus, convertStatusSource } from '../converters.js';
 import { getClient } from '../MastodonApiServerService.js';
 import { convertTimelinesArgsId, limitToInt } from './timeline.js';
 import type { Entity } from 'megalodon';
@@ -33,6 +33,21 @@ export class ApiStatusMastodon {
 		});
 	}
 
+	public async getStatusSource() {
+		this.fastify.get<{ Params: { id: string } }>('/v1/statuses/:id/source', async (_request, reply) => {
+			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
+			const accessTokens = _request.headers.authorization;
+			const client = getClient(BASE_URL, accessTokens);
+			try {
+				const data = await client.getStatusSource(convertId(_request.params.id, IdType.SharkeyId));
+				reply.send(convertStatusSource(data.data));
+			} catch (e: any) {
+				console.error(e);
+				reply.code(_request.is404 ? 404 : 401).send(e.response.data);
+			}
+		});
+	}
+
 	public async getContext() {
 		this.fastify.get<{ Params: { id: string } }>('/v1/statuses/:id/context', async (_request, reply) => {
 			const BASE_URL = `${_request.protocol}://${_request.hostname}`;
@@ -57,7 +72,7 @@ export class ApiStatusMastodon {
 	public async getHistory() {
 		this.fastify.get<{ Params: { id: string } }>('/v1/statuses/:id/history', async (_request, reply) => {
 			try {
-				reply.code(401).send({ message: 'Not Implemented' });
+				reply.send([]);
 			} catch (e: any) {
 				console.error(e);
 				reply.code(401).send(e.response.data);
@@ -160,7 +175,7 @@ export class ApiStatusMastodon {
 				const removed = text.replace(/@\S+/g, '').replace(/\s|/g, '');
 				const isDefaultEmoji = emojiRegexAtStartToEnd.test(removed);
 				const isCustomEmoji = /^:[a-zA-Z0-9@_]+:$/.test(removed);
-				if ((body.in_reply_to_id && isDefaultEmoji) || isCustomEmoji) {
+				if ((body.in_reply_to_id && isDefaultEmoji) || (body.in_reply_to_id && isCustomEmoji)) {
 					const a = await client.createEmojiReaction(
 						body.in_reply_to_id,
 						removed,
