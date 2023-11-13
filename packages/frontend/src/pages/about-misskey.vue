@@ -26,15 +26,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts._aboutMisskey.about }}<br><a href="https://misskey-hub.net/docs/misskey.html" target="_blank" class="_link">{{ i18n.ts.learnMore }}</a>
 				</div>
 				<div v-if="$i != null" style="text-align: center;">
-					<MkButton primary rounded inline @click="iLoveCherryPick">I <Mfm text="$[jelly ❤]"/> #CherryPick</MkButton>
+					<MkButton primary rounded inline @click="iLoveCherryPick">I <Mfm text="$[jelly ❤]"/> #Re:Lovers</MkButton>
 				</div>
-				<FormSection v-if="isKokonect">
-					<template #label>_KOKONECT_</template>
+				<FormSection>
+					<template #label>CherryPick</template>
 					<div class="_gaps_s">
-						<FormLink to="https://status.kokonect.link" external>
-							<template #icon><i class="ti ti-activity"></i></template>
-							{{ i18n.ts._aboutMisskey._kokonect.serverStatus }}
-							<template #suffix>Server Status</template>
+						<FormLink to="https://github.com/164-life/re_lovers" external>
+							<template #icon><i class="ti ti-code"></i></template>
+							{{ i18n.ts._aboutMisskey.source }}
+							<template #suffix>GitHub</template>
 						</FormLink>
 					</div>
 				</FormSection>
@@ -90,6 +90,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
 					<div :class="$style.contributors">
+						<a href="https://github.com/164-life" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/146170742?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@164-life
+								<span :class="$style.contributorClient">
+									<span :class="$style.re">Re:</span><span :class="$style.Lovers">Lovers</span>
+								</span>
+							</span>
+						</a>
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo
@@ -238,79 +246,9 @@ import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js
 import { $i } from '@/account.js';
 
 const patronsWithIconWithCherryPick = [{
-	name: '아르페',
-	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/12167100/e2bc361ba5864c0ab40fc435626f4754/eyJ3IjoyMDB9/1.jpeg?token-time=2145916800&token-hash=fTnx80yG8wG6EdVyv8zDULe8qKnrRlnUV5PEVFS5CfA%3D',
 }];
 
 const patronsWithIconWithMisskey = [{
-	name: 'カイヤン',
-	icon: 'https://misskey-hub.net/patrons/a2820716883e408cb87773e377ce7c8d.jpg',
-}, {
-	name: 'だれかさん',
-	icon: 'https://misskey-hub.net/patrons/f7409b5e5a88477a9b9d740c408de125.jpg',
-}, {
-	name: 'narazaka',
-	icon: 'https://misskey-hub.net/patrons/e3affff31ffb4877b1196c7360abc3e5.jpg',
-}, {
-	name: 'ひとぅ',
-	icon: 'https://misskey-hub.net/patrons/8cc0d0a0a6d84c88bca1aedabf6ed5ab.jpg',
-}, {
-	name: 'ぱーこ',
-	icon: 'https://misskey-hub.net/patrons/79c6602ffade489e8df2fcf2c2bc5d9d.jpg',
-}, {
-	name: 'わっほー☆',
-	icon: 'https://misskey-hub.net/patrons/d31d5d13924443a082f3da7966318a0a.jpg',
-}, {
-	name: 'mollinaca',
-	icon: 'https://misskey-hub.net/patrons/ceb36b8f66e549bdadb3b90d5da62314.jpg',
-}, {
-	name: '坂本龍',
-	icon: 'https://misskey-hub.net/patrons/a631cf8b490145cf8dbbe4e7508cfbc2.jpg',
-}, {
-	name: 'takke',
-	icon: 'https://misskey-hub.net/patrons/6c3327e626c046f2914fbcd9f7557935.jpg',
-}, {
-	name: 'ぺんぎん',
-	icon: 'https://misskey-hub.net/patrons/6a652e0534ff4cb1836e7ce4968d76a7.jpg',
-}, {
-	name: 'かみらえっと',
-	icon: 'https://misskey-hub.net/patrons/be1326bda7d940a482f3758ffd9ffaf6.jpg',
-}, {
-	name: 'へてて',
-	icon: 'https://misskey-hub.net/patrons/0431eacd7c6843d09de8ea9984307e86.jpg',
-}, {
-	name: 'spinlock',
-	icon: 'https://misskey-hub.net/patrons/6a1cebc819d540a78bf20e9e3115baa8.jpg',
-}, {
-	name: 'じゅくま',
-	icon: 'https://misskey-hub.net/patrons/3e56bdac69dd42f7a06e0f12cf2fc895.jpg',
-}, {
-	name: '清遊あみ',
-	icon: 'https://misskey-hub.net/patrons/de25195b88e940a388388bea2e7637d8.jpg',
-}, {
-	name: 'Nagi8410',
-	icon: 'https://misskey-hub.net/patrons/31b102ab4fc540ed806b0461575d38be.jpg',
-}, {
-	name: '山岡士郎',
-	icon: 'https://misskey-hub.net/patrons/84b9056341684266bb1eda3e680d094d.jpg',
-}, {
-	name: 'よもやまたろう',
-	icon: 'https://misskey-hub.net/patrons/4273c9cce50d445f8f7d0f16113d6d7f.jpg',
-}, {
-	name: '花咲ももか',
-	icon: 'https://misskey-hub.net/patrons/8c9b2b9128cb4fee99f04bb4f86f2efa.jpg',
-}, {
-	name: 'カガミ',
-	icon: 'https://misskey-hub.net/patrons/226ea3a4617749548580ec2d9a263e24.jpg',
-}, {
-	name: 'フランギ・シュウ',
-	icon: 'https://misskey-hub.net/patrons/3016d37e35f3430b90420176c912d304.jpg',
-}, {
-	name: '百日紅',
-	icon: 'https://misskey-hub.net/patrons/302dce2898dd457ba03c3f7dc037900b.jpg',
-}, {
-	name: 'taichan',
-	icon: 'https://misskey-hub.net/patrons/f981ab0159fb4e2c998e05f7263e1cd9.png',
 }];
 
 const patronsWithCherryPick = [
@@ -318,105 +256,6 @@ const patronsWithCherryPick = [
 ];
 
 const patronsWithMisskey = [
-	'まっちゃとーにゅ',
-	'mametsuko',
-	'noellabo',
-	'AureoleArk',
-	'Gargron',
-	'Nokotaro Takeda',
-	'Suji Yan',
-	'oi_yekssim',
-	'regtan',
-	'Hekovic',
-	'nenohi',
-	'Gitmo Life Services',
-	'naga_rus',
-	'Efertone',
-	'Melilot',
-	'motcha',
-	'nanami kan',
-	'sevvie Rose',
-	'Hayato Ishikawa',
-	'Puniko',
-	'skehmatics',
-	'Quinton Macejkovic',
-	'YUKIMOCHI',
-	'dansup',
-	'mewl hayabusa',
-	'Emilis',
-	'Fristi',
-	'makokunsan',
-	'chidori ninokura',
-	'Peter G.',
-	'見当かなみ',
-	'natalie',
-	'Maronu',
-	'Steffen K9',
-	'takimura',
-	'sikyosyounin',
-	'Nesakko',
-	'YuzuRyo61',
-	'blackskye',
-	'sheeta.s',
-	'osapon',
-	'public_yusuke',
-	'CG',
-	'吴浥',
-	't_w',
-	'Jerry',
-	'nafuchoco',
-	'Takumi Sugita',
-	'GLaTAN',
-	'mkatze',
-	'kabo2468y',
-	'mydarkstar',
-	'Roujo',
-	'DignifiedSilence',
-	'uroco @99',
-	'totokoro',
-	'うし',
-	'kiritan',
-	'weepjp',
-	'Liaizon Wakest',
-	'Duponin',
-	'Blue',
-	'Naoki Hirayama',
-	'wara',
-	'Wataru Manji (manji0)',
-	'みなしま',
-	'kanoy',
-	'xianon',
-	'Denshi',
-	'Osushimaru',
-	'にょんへら',
-	'おのだい',
-	'Leni',
-	'oss',
-	'Weeble',
-	'蝉暮せせせ',
-	'ThatOneCalculator',
-	'pixeldesu',
-	'あめ玉',
-	'氷月氷華里',
-	'Ebise Lutica',
-	'巣黒るい@リスケモ男の娘VTuber!',
-	'ふぇいぽむ',
-	'依古田イコ',
-	'戸塚こだま',
-	'すー。',
-	'秋雨/Slime-hatena.jp',
-	'けそ',
-	'ずも',
-	'binvinyl',
-	'渡志郎',
-	'ぷーざ',
-	'越貝鯛丸',
-	'Nick / pprmint.',
-	'kino3277',
-	'美少女JKぐーちゃん',
-	'てば',
-	'たっくん',
-	'SHO SEKIGUCHI',
 ];
 
 let isKokonect = false;
@@ -461,7 +300,7 @@ function gravity() {
 
 function iLoveCherryPick() {
 	os.post({
-		initialText: 'I $[jelly ❤] #CherryPick',
+		initialText: 'I $[jelly ❤] #ReLovers',
 		instant: true,
 	});
 }
@@ -645,6 +484,14 @@ definePageMetadata({
 
 	> .misskey {
 		color: #86b300;
+	}
+
+	> .re {
+		color: #b266ff;
+	}
+
+	> .Lovers {
+		color: #FF99FF;
 	}
 
 	> .cherry {

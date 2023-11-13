@@ -6,31 +6,26 @@ block loadClientEntry
 doctype html
 
 //
-	-
-		_________ .__                                __________.__        __
-		\_   ___ \|  |__   __________________ ___.__.\______   \__| ____ |  | __
-		/    \  \/|  |  \_/ __ \_  __ \_  __ <   |  | |     ___/  |/ ___\|  |/ /
-		\     \___|   Y  \  ___/|  | \/|  | \/\___  | |    |   |  \  \___|    <
-		\______  /___|  /\___  >__|   |__|   / ____| |____|   |__|\___  >__|_ \
-			\/     \/     \/              \/                       \/     \/
-		Thank you for using CherryPick!
-		If you are reading this message... how about joining the development?
-		https://github.com/kokonect-link/cherrypick
+		Re:Loversをご利用いただきありがとうございます！
+		Re:Loversは「Misskey」 と 「CherryPick」をベースにして、2023年から @164-life 及び 1641projectが開発しているカスタムクライアントです。
+		Thank you for using Re:Lovers!
+		Re:Lovers is a custom client based on "Misskey" and "CherryPick" and developed by @164-life and 1641project since 2023.
+		https://github.com/164-life/re_lovers
 
 html
 
 	head
 		meta(charset='utf-8')
-		meta(name='application-name' content='CherryPick')
+		meta(name='application-name' content='Re:Lovers')
 		meta(name='referrer' content='origin')
 		meta(name='theme-color' content= themeColor || 'rgb(255, 188, 220)')
 		meta(name='theme-color-orig' content= themeColor || 'rgb(255, 188, 220)')
-		meta(property='og:site_name' content= instanceName || 'CherryPick')
+		meta(property='og:site_name' content= instanceName || 'Re:Lovers')
 		meta(name='viewport' content='width=device-width, initial-scale=1')
 		link(rel='icon' href= icon || '/favicon.ico')
 		link(rel='apple-touch-icon' href= appleTouchIcon || '/apple-touch-icon.png')
 		link(rel='manifest' href='/manifest.json')
-		link(rel='search' type='application/opensearchdescription+xml' title=(title || "CherryPick") href=`${url}/opensearch.xml`)
+		link(rel='search' type='application/opensearchdescription+xml' title=(title || "Re:Lovers") href=`${url}/opensearch.xml`)
 		link(rel='prefetch' href=serverErrorImageUrl)
 		link(rel='prefetch' href=infoImageUrl)
 		link(rel='prefetch' href=notFoundImageUrl)
@@ -47,7 +42,7 @@ html
 
 		title
 			block title
-				= title || 'CherryPick'
+				= title || 'Re:Lovers'
 
 		block desc
 			meta(name='description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨')
@@ -55,7 +50,7 @@ html
 		block meta
 
 		block og
-			meta(property='og:title'       content= title || 'CherryPick')
+			meta(property='og:title'       content= title || 'Re:Lovers')
 			meta(property='og:description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨')
 			meta(property='og:image'       content= img)
 			meta(property='twitter:card'   content='summary')

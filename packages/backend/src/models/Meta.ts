@@ -369,14 +369,14 @@ export class MiMeta {
 
 	@Column('varchar', {
 		length: 1024,
-		default: 'https://github.com/kokonect-link/cherrypick',
+		default: 'https://github.com/164-life/re_lovers',
 		nullable: false,
 	})
 	public repositoryUrl: string;
 
 	@Column('varchar', {
 		length: 1024,
-		default: 'https://github.com/kokonect-link/cherrypick/issues/new',
+		default: 'https://github.com/164-life/re_lovers/issues/new',
 		nullable: true,
 	})
 	public feedbackUrl: string | null;
