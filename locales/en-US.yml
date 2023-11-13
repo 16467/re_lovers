@@ -1869,7 +1869,7 @@ _registry:
   domain: "Domain"
   createKey: "Create key"
 _aboutMisskey:
-  about: "Re:Lovers is a custom client based on "Misskey" and "CherryPick" and developed by @164-life and 1641project since 2023."
+  about: "Re:Lovers is a custom client based on Misskey and CherryPick and developed by @164-life and 1641project since 2023."
   contributors: "Main contributors"
   allContributors: "All contributors"
   source: "Source code"
