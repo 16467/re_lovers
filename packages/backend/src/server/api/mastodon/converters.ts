@@ -160,6 +160,11 @@ export class MastoConverters {
 		});
 	}
 
+	private async convertReblog(status: Entity.Status | null): Promise<any> {
+		if (!status) return null;
+		return await this.convertStatus(status);
+	}
+
 	public async convertStatus(status: Entity.Status) {
 		const convertedAccount = this.convertAccount(status.account);
 		const note = await this.getterService.getNote(status.id);
