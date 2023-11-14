@@ -160,36 +160,6 @@ export class MastoConverters {
 		});
 	}
 
-	public async getEdits(id: string) {
-		const note = await this.getterService.getNote(id);
-		if (!note) {
-			return {};
-		}
-
-		const noteUser = await this.getUser(note.userId).then(async (p) => await this.convertAccount(p));
-		const edits = await this.noteEditRepository.find({ where: { noteId: note.id }, order: { id: 'ASC' } });
-		const history: Promise<any>[] = [];
-
-		let lastDate = this.idService.parse(note.id).date;
-		for (const edit of edits) {
-			const files = this.driveFileEntityService.packManyByIds(edit.fileIds);
-			const item = {
-				account: noteUser,
-				content: this.mfmService.toMastoHtml(mfm.parse(edit.newText ?? ''), JSON.parse(note.mentionedRemoteUsers)).then(p => p ?? ''),
-				created_at: lastDate.toISOString(),
-				emojis: [],
-				sensitive: files.then(files => files.length > 0 ? files.some((f) => f.isSensitive) : false),
-				spoiler_text: edit.cw ?? '',
-				poll: null,
-				media_attachments: files.then(files => files.length > 0 ? files.map((f) => this.encodeFile(f)) : [])
-			};
-			lastDate = edit.updatedAt;
-			history.push(awaitAll(item));
-		}
-
-		return await Promise.all(history);
-	}
-
 	public async convertStatus(status: Entity.Status) {
 		const convertedAccount = this.convertAccount(status.account);
 		const note = await this.getterService.getNote(status.id);
