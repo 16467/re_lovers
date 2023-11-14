@@ -88,7 +88,7 @@ namespace MisskeyAPI {
         noindex: null,
         suspended: null,
         limited: null,
-        created_at: u.createdAt ? u.createdAt : '',
+        created_at: u.createdAt ? u.createdAt : new Date().toUTCString(),
         followers_count: u.followersCount ? u.followersCount : 0,
         following_count: u.followingCount ? u.followingCount : 0,
         statuses_count: u.notesCount ? u.notesCount : 0,
