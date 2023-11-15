@@ -78,11 +78,13 @@ namespace MisskeyAPI {
 				acct = `${u.username}@${u.host}`;
 				acctUrl = `https://${u.host}/@${u.username}`;
 			}
+      const fqn = `${u.username}@${u.host ?? host}`;
       return {
         id: u.id,
+        fqn: fqn,
         username: u.username,
         acct: acct,
-        display_name: u.name,
+        display_name: u.name ? u.name : '',
         locked: false,
         group: null,
         noindex: null,
@@ -117,7 +119,7 @@ namespace MisskeyAPI {
         id: u.id,
         username: u.username,
         acct: acct,
-        display_name: u.name,
+        display_name: u.name ? u.name : '',
         locked: u.isLocked,
         group: null,
         noindex: null,
@@ -242,18 +244,19 @@ namespace MisskeyAPI {
       }
     }
 
-    export const poll = (p: Entity.Poll): MegalodonEntity.Poll => {
+    export const poll = (p: Entity.Poll, id: string): MegalodonEntity.Poll => {
       const now = dayjs()
       const expire = dayjs(p.expiresAt)
       const count = p.choices.reduce((sum, choice) => sum + choice.votes, 0)
       return {
-        id: '',
+        id: id,
         expires_at: p.expiresAt,
         expired: now.isAfter(expire),
         multiple: p.multiple,
         votes_count: count,
         options: Array.isArray(p.choices) ? p.choices.map(c => choice(c)) : [],
         voted: Array.isArray(p.choices) ? p.choices.some(c => c.isVoted) : false,
+        own_votes: Array.isArray(p.choices) ? p.choices.filter((c) => c.isVoted).map((c) => p.choices.indexOf(c)) : [],
         emojis: [],
       }
     }
@@ -294,13 +297,21 @@ namespace MisskeyAPI {
         mentions: [],
         tags: [],
         card: null,
-        poll: n.poll ? poll(n.poll) : null,
+        poll: n.poll ? poll(n.poll, n.id) : null,
         application: null,
         language: null,
         pinned: null,
         emoji_reactions: typeof n.reactions === 'object' ? mapReactions(n.reactions, n.myReaction) : [],
         bookmarked: false,
         quote: n.renote && n.text ? note(n.renote, n.user.host ? n.user.host : host ? host : null) : false
+      }
+    }
+
+    export const notesource = (n: Entity.Note): MegalodonEntity.StatusSource => {
+      return {
+        id: n.id,
+        text: n.text ?? '',
+        spoiler_text: n.cw ? n.cw : ''
       }
     }
 
@@ -380,7 +391,7 @@ namespace MisskeyAPI {
     export const list = (l: Entity.List): MegalodonEntity.List => ({
       id: l.id,
       title: l.name,
-      replies_policy: null
+      exclusive: null
     })
 
     export const encodeNotificationType = (
@@ -456,8 +467,8 @@ namespace MisskeyAPI {
 
     export const stats = (s: Entity.Stats): MegalodonEntity.Stats => {
       return {
-        user_count: s.usersCount,
-        status_count: s.notesCount,
+        user_count: s.originalUsersCount,
+        status_count: s.originalNotesCount,
         domain_count: s.instances
       }
     }

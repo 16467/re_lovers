@@ -367,7 +367,7 @@ export class UserEntityService implements OnModuleInit {
 			.getMany() : [];
 		const profile = opts.detail ? (opts.userProfile ?? await this.userProfilesRepository.findOneByOrFail({ userId: user.id })) : null;
 
-		const mastoapi = opts.userProfile ?? await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
+		const mastoapi = !opts.detail ? opts.userProfile ?? await this.userProfilesRepository.findOneByOrFail({ userId: user.id }) : null;
 
 		const followingCount = profile == null ? null :
 			(profile.ffVisibility === 'public') || isMe ? user.followingCount :
@@ -402,7 +402,7 @@ export class UserEntityService implements OnModuleInit {
 				flipH: ud.flipH || undefined,
 				url: decorations.find(d => d.id === ud.id)!.url,
 			}))) : [],
-			description: mastoapi!.description,
+			description: mastoapi ? mastoapi.description : profile ? profile.description : '',
 			isBot: user.isBot,
 			isCat: user.isCat,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {

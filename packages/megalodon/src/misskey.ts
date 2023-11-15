@@ -225,7 +225,7 @@ export default class Misskey implements MegalodonInterface {
     if (options) {
       if (options.bot !== undefined) {
         params = Object.assign(params, {
-          isBot: options.bot
+          isBot: options.bot.toString() === 'true' ? true : false
         })
       }
       if (options.display_name) {
@@ -238,9 +238,24 @@ export default class Misskey implements MegalodonInterface {
           description: options.note
         })
       }
+      if (options.avatar) {
+        params = Object.assign(params, {
+          avatarId: options.avatar
+        })
+      }
+      if (options.header) {
+        params = Object.assign(params, {
+          bannerId: options.header
+        })
+      }
+      if (options.fields_attributes) {
+        params = Object.assign(params, {
+          fields: options.fields_attributes
+        })
+      }
       if (options.locked !== undefined) {
         params = Object.assign(params, {
-          isLocked: options.locked
+          isLocked: options.locked.toString() === 'true' ? true : false
         })
       }
       if (options.source) {
@@ -256,7 +271,7 @@ export default class Misskey implements MegalodonInterface {
         }
       }
     }
-    return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i', params).then(res => {
+    return this.client.post<MisskeyAPI.Entity.UserDetail>('/api/i/update', params).then(res => {
       return Object.assign(res, {
         data: MisskeyAPI.Converter.userDetail(res.data)
       })
@@ -610,7 +625,7 @@ export default class Misskey implements MegalodonInterface {
       max_id?: string
       since_id?: string
     }
-  ): Promise<Response<Array<Entity.Account>>> {
+  ): Promise<Response<Array<Entity.Account>> | any> {
     let params = {
       query: q,
       detail: true
@@ -1086,11 +1101,11 @@ export default class Misskey implements MegalodonInterface {
         let pollParam = {
           choices: options.poll.options,
           expiresAt: null,
-          expiredAfter: options.poll.expires_in
+          expiredAfter: options.poll.expires_in * 1000
         }
         if (options.poll.multiple !== undefined) {
           pollParam = Object.assign(pollParam, {
-            multiple: options.poll.multiple
+            multiple: options.poll.multiple.toString() === 'true' ? true : false
           })
         }
         params = Object.assign(params, {
@@ -1295,11 +1310,15 @@ export default class Misskey implements MegalodonInterface {
 		return result;
 	}
 
+  /**
+   * GET /api/notes/show
+   */
   public async getStatusSource(_id: string): Promise<Response<Entity.StatusSource>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    return this.client
+      .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
+        noteId: _id
+      })
+      .then(res => ({ ...res, data: MisskeyAPI.Converter.notesource(res.data) }))
   }
 
   /**
@@ -1502,42 +1521,50 @@ export default class Misskey implements MegalodonInterface {
   // statuses/polls
   // ======================================
   public async getPoll(_id: string): Promise<Response<Entity.Poll>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    const res = await this.getStatus(_id);
+		if (res.data.poll == null) throw new Error('poll not found');
+		return { ...res, data: res.data.poll };
   }
 
   /**
    * POST /api/notes/polls/vote
    */
-  public async votePoll(_id: string, choices: Array<number>, status_id?: string | null): Promise<Response<Entity.Poll>> {
-    if (!status_id) {
-      return new Promise((_, reject) => {
-        const err = new ArgumentError('status_id is required')
-        reject(err)
-      })
-    }
-    const params = {
-      noteId: status_id,
-      choice: choices[0]
-    }
-    await this.client.post<{}>('/api/notes/polls/vote', params)
+  public async votePoll(_id: string, choices: Array<number>): Promise<Response<Entity.Poll>> {
+    if (!_id) {
+			return new Promise((_, reject) => {
+				const err = new ArgumentError('id is required');
+				reject(err);
+			});
+		}
+
+		for (const c of choices) {
+			const params = {
+				noteId: _id,
+				choice: +c,
+			};
+			await this.client.post<{}>('/api/notes/polls/vote', params);
+		}
+
     const res = await this.client
-      .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
-        noteId: status_id
-      })
-      .then(res => {
-        const note = MisskeyAPI.Converter.note(res.data, this.baseUrl)
-        return { ...res, data: note.poll }
-      })
+    .post<MisskeyAPI.Entity.Note>('/api/notes/show', {
+      noteId: _id,
+    })
+    .then(async (res) => {
+      const note = await MisskeyAPI.Converter.note(
+        res.data,
+        this.baseUrl,
+      );
+      return { ...res, data: note.poll };
+    });
+
     if (!res.data) {
       return new Promise((_, reject) => {
-        const err = new UnexpectedError('poll does not exist')
-        reject(err)
-      })
+        const err = new UnexpectedError('poll does not exist');
+        reject(err);
+      });
     }
-    return { ...res, data: res.data }
+
+    return { ...res, data: res.data };
   }
 
   // ======================================
@@ -1859,9 +1886,15 @@ export default class Misskey implements MegalodonInterface {
   /**
    * POST /api/users/lists/list
    */
-  public async getLists(id: string): Promise<Response<Array<Entity.List>>> {
+  public async getLists(id?: string): Promise<Response<Array<Entity.List>>> {
+    if (id) {
+      return this.client
+        .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', { userId: id })
+        .then(res => ({ ...res, data: res.data.map(l => MisskeyAPI.Converter.list(l)) }))
+    }
+
     return this.client
-      .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', { userId: id })
+      .post<Array<MisskeyAPI.Entity.List>>('/api/users/lists/list', {})
       .then(res => ({ ...res, data: res.data.map(l => MisskeyAPI.Converter.list(l)) }))
   }
 
@@ -2005,7 +2038,7 @@ export default class Misskey implements MegalodonInterface {
       }
       if (options.exclude_type) {
         params = Object.assign(params, {
-          excludeType: options.exclude_type.map(e => MisskeyAPI.Converter.encodeNotificationType(e))
+          excludeTypes: options.exclude_type.map(e => MisskeyAPI.Converter.encodeNotificationType(e))
         })
       }
     }
@@ -2118,7 +2151,11 @@ export default class Misskey implements MegalodonInterface {
             params = Object.assign(params, {
               limit: options.limit
             })
-          }
+          } else {
+						params = Object.assign(params, {
+							limit: 20,
+						});
+					}
           if (options.offset) {
             params = Object.assign(params, {
               offset: options.offset
@@ -2129,28 +2166,46 @@ export default class Misskey implements MegalodonInterface {
               localOnly: options.resolve
             })
           }
-        }
-        const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
-        if (match) {
-          const lookupQuery = {
-            username: match.groups?.user,
-            host: match.groups?.host,
-          };
+        } else {
+					params = Object.assign(params, {
+						limit: 20,
+					});
+				}
+        try {
+          const match = q.match(/^@?(?<user>[a-zA-Z0-9_]+)(?:@(?<host>[a-zA-Z0-9-.]+\.[a-zA-Z0-9-]+)|)$/);
+          if (match) {
+            const lookupQuery = {
+              username: match.groups?.user,
+              host: match.groups?.host,
+            };
 
-          return await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
-            ...res,
-            data: {
-              accounts: [
-                MisskeyAPI.Converter.userDetail(
-                  res.data,
-                  this.baseUrl,
-                ),
-              ],
-              statuses: [],
-              hashtags: [],
-            },
-          }));
-        }
+            const result = await this.client.post<MisskeyAPI.Entity.UserDetail>('/api/users/show', lookupQuery).then((res) => ({
+              ...res,
+              data: {
+                accounts: [
+                  MisskeyAPI.Converter.userDetail(
+                    res.data,
+                    this.baseUrl,
+                  ),
+                ],
+                statuses: [],
+                hashtags: [],
+              },
+            }));
+            
+            if (result.status !== 200) {
+							result.status = 200;
+							result.statusText = "OK";
+							result.data = {
+								accounts: [],
+								statuses: [],
+								hashtags: [],
+							};
+						}
+
+						return result;
+          }
+        } catch {}
         return this.client.post<Array<MisskeyAPI.Entity.UserDetail>>('/api/users/search', params).then(res => ({
           ...res,
           data: {
@@ -2312,10 +2367,9 @@ export default class Misskey implements MegalodonInterface {
   }
 
   public async dismissInstanceAnnouncement(_id: string): Promise<Response<Record<never, never>>> {
-    return new Promise((_, reject) => {
-      const err = new NoImplementedError('misskey does not support')
-      reject(err)
-    })
+    return this.client.post<{}>("/api/i/read-announcement", {
+			announcementId: _id,
+		});
   }
 
   public async addReactionToAnnouncement(_id: string, _name: string): Promise<Response<Record<never, never>>> {
