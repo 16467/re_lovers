@@ -15,6 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div class="cherrypick">Re:Lovers</div>
 						<div class="version" @click="whatIsNewCherryPick">v{{ version }}</div>
 						<div class="version" style="font-size: 11px;" @click="whatIsNewMisskey">v{{ basedMisskeyVersion }} (Based on Misskey)</div>
+						<div class="version" style="font-size: 11px;" @click="whatIsNewMisskey">v{{ basedCherryPickVersion }} (Based on CherryPick)</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
 							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true"/>
 							<MkEmoji v-else class="emoji" :emoji="emoji.emoji" :normal="true" :noStyle="true"/>
@@ -35,6 +36,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
+						</FormLink>
+						<FormLink to="https://discord.gg/4T7gk6aCYf" external>
+							<template #icon><i class="ti ti-brand-discord"></i></template>
+							{{ i18n.ts._aboutMisskey._cherrypick.community }}
+							<template #suffix>Discord</template>
 						</FormLink>
 					</div>
 				</FormSection>
@@ -184,45 +190,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</span>
 						</a>
 					</div>
-					<MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink>
-				</FormSection>
-				<FormSection>
-					<template #label>Special thanks</template>
-					<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));grid-gap:24px;align-items:center;">
-						<div>
-							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img style="width: 100%;" src="https://misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
-						</div>
-						<div>
-							<a style="display: inline-block;" class="xserver" title="XServer" href="https://www.xserver.ne.jp/" target="_blank"><img style="width: 100%;" src="https://misskey-hub.net/sponsors/xserver.png" alt="XServer"></a>
-						</div>
-						<div>
-							<a style="display: inline-block;" class="skeb" title="Skeb" href="https://skeb.jp/" target="_blank"><img style="width: 100%;" src="https://misskey-hub.net/sponsors/skeb.svg" alt="Skeb"></a>
-						</div>
-					</div>
-				</FormSection>
-				<FormSection>
-					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
-					<p style="font-weight: bold">CherryPick</p>
-					<div :class="$style.patronsWithIcon">
-						<div v-for="patron in patronsWithIconWithCherryPick" :class="$style.patronWithIcon">
-							<img :src="patron.icon" :class="$style.patronIcon">
-							<span :class="$style.patronName">{{ patron.name }}</span>
-						</div>
-					</div>
-					<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); grid-gap: 12px;">
-						<div v-for="patron in patronsWithCherryPick" :key="patron">{{ patron }}</div>
-					</div>
-					<p style="font-weight: bold; padding-top: 20px"><b>Misskey</b></p>
-					<div :class="$style.patronsWithIcon">
-						<div v-for="patron in patronsWithIconWithMisskey" :class="$style.patronWithIcon">
-							<img :src="patron.icon" :class="$style.patronIcon">
-							<span :class="$style.patronName">{{ patron.name }}</span>
-						</div>
-					</div>
-					<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); grid-gap: 12px;">
-						<div v-for="patron in patronsWithMisskey" :key="patron">{{ patron }}</div>
-					</div>
-					<p>{{ i18n.ts._aboutMisskey.morePatrons }}</p>
+					<MkLink url="https://github.com/164-life/re_lovers/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink>
 				</FormSection>
 			</div>
 		</MkSpacer>
@@ -232,7 +200,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, onMounted } from 'vue';
-import { version, basedMisskeyVersion } from '@/config.js';
+import { version, basedMisskeyVersion, basedCherryPickVersion } from '@/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -244,19 +212,6 @@ import * as os from '@/os.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
-
-const patronsWithIconWithCherryPick = [{
-}];
-
-const patronsWithIconWithMisskey = [{
-}];
-
-const patronsWithCherryPick = [
-	'',
-];
-
-const patronsWithMisskey = [
-];
 
 let isKokonect = false;
 

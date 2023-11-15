@@ -1,7 +1,7 @@
 <!-- ℹ お読みください / README
 PRありがとうございます！ PRを作成する前に、コントリビューションガイドをご確認ください:
 Thank you for your PR! Before creating a PR, please check the contribution guide:
-https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md
+https://github.com/164-life/re_lovers/blob/develop/CONTRIBUTING.md
 -->
 
 ## What
@@ -17,7 +17,7 @@ https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md
 <!-- Test perspective, etc -->
 
 ## Checklist
-- [ ] Read the [contribution guide](https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md)
+- [ ] Read the [contribution guide](https://github.com/164-life/re_lovers/blob/develop/CONTRIBUTING.md)
 - [ ] Test working in a local environment
 - [ ] (If needed) Add story of storybook
 - [ ] (If needed) Update CHANGELOG.md
