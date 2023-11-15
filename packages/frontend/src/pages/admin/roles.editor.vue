@@ -200,8 +200,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkFolder>
 
-			<MkFolder>
-				<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportNotes, 'canImportNotes'])">
+			<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportNotes, 'canImportNotes'])">
 				<template #label>{{ i18n.ts._role._options.canImportNotes }}</template>
 				<template #suffix>
 					<span v-if="role.policies.canImportNotes.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
