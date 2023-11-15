@@ -8,14 +8,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection first>
 		<template #label><i class="ph-pencil ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.allNotes }}</template>
 		<div class="_gaps_s">
-			<MkFolder>
-				<template #label>{{ i18n.ts.export }}</template>
-				<template #icon><i class="ph-download ph-bold ph-lg"></i></template>
-				<MkButton primary :class="$style.button" inline @click="exportNotes()"><i class="ph-download ph-bold ph-lg"></i> {{ i18n.ts.export }}</MkButton>
-			</MkFolder>
 			<MkFolder v-if="$i && $i.policies.canImportNotes">
 				<template #label>{{ i18n.ts.import }}</template>
-				<template #icon><i class="ph-upload ph-bold ph-lg"></i></template>
+				<template #icon><i class="ti ti-pencil"></i></template>
 				<MkRadios v-model="noteType" style="padding-bottom: 8px;" small>
 					<template #label>Origin</template>
 					<option value="Misskey">Misskey/Firefish</option>
