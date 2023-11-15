@@ -8,6 +8,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection first>
 		<template #label><i class="ph-pencil ph-bold ph-lg"></i> {{ i18n.ts._exportOrImport.allNotes }}</template>
 		<div class="_gaps_s">
+			<MkFolder>
+				<template #label>{{ i18n.ts.export }}</template>
+				<template #icon><i class="ti ti-download"></i></template>
+				<MkButton primary :class="$style.button" inline @click="exportNotes()"><i class="ti ti-download"></i> {{ i18n.ts.export }}</MkButton>
+			</MkFolder>
 			<MkFolder v-if="$i && $i.policies.canImportNotes">
 				<template #label>{{ i18n.ts.import }}</template>
 				<template #icon><i class="ti ti-pencil"></i></template>
