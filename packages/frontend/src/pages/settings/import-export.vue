@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 			<MkFolder v-if="$i && $i.policies.canImportNotes">
 				<template #label>{{ i18n.ts.import }}</template>
-				<template #icon><i class="ti ti-pencil"></i></template>
+				<template #icon><i class="ti ti-upload"></i></template>
 				<MkRadios v-model="noteType" style="padding-bottom: 8px;" small>
 					<template #label>Origin</template>
 					<option value="Misskey">Misskey/Firefish</option>
