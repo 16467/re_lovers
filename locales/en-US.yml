@@ -1755,6 +1755,7 @@ _role:
     ltlAvailable: "Can view the local timeline"
     canPublicNote: "Can send public notes"
     canEditNote: "Note editing"
+    canImportNotes: "Can import notes"
     canInvite: "Can create instance invite codes"
     inviteLimit: "Invite limit"
     inviteLimitCycle: "Invite limit cooldown"
