@@ -1866,6 +1866,7 @@ export interface Locale {
             "ltlAvailable": string;
             "canPublicNote": string;
             "canEditNote": string;
+            "canImportNotes": string;
             "canInvite": string;
             "inviteLimit": string;
             "inviteLimitCycle": string;
