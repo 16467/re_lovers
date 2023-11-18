@@ -118,6 +118,19 @@ export class MiUser {
 	@JoinColumn()
 	public banner: MiDriveFile | null;
 
+	@Column({
+		...id(),
+		nullable: true,
+		comment: 'The ID of background DriveFile.',
+	})
+	public backgroundId: MiDriveFile['id'] | null;
+
+	@OneToOne(type => MiDriveFile, {
+		onDelete: 'SET NULL',
+	})
+	@JoinColumn()
+	public background: MiDriveFile | null;
+
 	@Column('varchar', {
 		length: 512, nullable: true,
 	})
@@ -127,6 +140,11 @@ export class MiUser {
 		length: 512, nullable: true,
 	})
 	public bannerUrl: string | null;
+
+	@Column('varchar', {
+		length: 512, nullable: true,
+	})
+	public backgroundUrl: string | null;
 
 	@Column('varchar', {
 		length: 128, nullable: true,
@@ -146,6 +164,11 @@ export class MiUser {
 		angle: number;
 		flipH: boolean;
 	}[];
+
+	@Column('varchar', {
+		length: 128, nullable: true,
+	})
+	public backgroundBlurhash: string | null;
 
 	@Index()
 	@Column('varchar', {

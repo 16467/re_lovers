@@ -479,9 +479,10 @@ export class ApRendererService {
 		const id = this.userEntityService.genLocalUserUri(user.id);
 		const isSystem = user.username.includes('.');
 
-		const [avatar, banner, profile] = await Promise.all([
+		const [avatar, banner, background, profile] = await Promise.all([
 			user.avatarId ? this.driveFilesRepository.findOneBy({ id: user.avatarId }) : undefined,
 			user.bannerId ? this.driveFilesRepository.findOneBy({ id: user.bannerId }) : undefined,
+			user.backgroundId ? this.driveFilesRepository.findOneBy({ id: user.backgroundId }) : undefined,
 			this.userProfilesRepository.findOneByOrFail({ userId: user.id }),
 		]);
 
@@ -522,6 +523,7 @@ export class ApRendererService {
 			_misskey_summary: profile.description,
 			icon: avatar ? this.renderImage(avatar) : null,
 			image: banner ? this.renderImage(banner) : null,
+			backgroundUrl: background ? this.renderImage(background) : null,
 			tag,
 			manuallyApprovesFollowers: user.isLocked,
 			discoverable: user.isExplorable,
@@ -681,6 +683,12 @@ export class ApRendererService {
 					'_misskey_summary': 'misskey:_misskey_summary',
 					'_misskey_talk': 'misskey:_misskey_talk',
 					'isCat': 'misskey:isCat',
+					// Firefish
+					firefish: "https://joinfirefish.org/ns#",
+					speakAsCat: "firefish:speakAsCat",
+					// Sharkey
+					sharkey: "https://joinsharkey.org/ns#",
+					backgroundUrl: "sharkey:backgroundUrl",
 					// vcard
 					vcard: 'http://www.w3.org/2006/vcard/ns#',
 				},

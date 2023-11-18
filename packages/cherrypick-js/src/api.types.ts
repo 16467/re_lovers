@@ -422,6 +422,7 @@ export type Endpoints = {
 		birthday?: string | null;
 		avatarId?: DriveFile['id'] | null;
 		bannerId?: DriveFile['id'] | null;
+		backgroundId?: DriveFile['id'] | null;
 		fields?: {
 			name: string;
 			value: string;
