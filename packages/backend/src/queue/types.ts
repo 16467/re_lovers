@@ -52,6 +52,7 @@ export type DbJobMap = {
 	importNotes: DbUserImportJobData;
 	importTweetsToDb: DbNoteImportToDbJobData;
 	importIGToDb: DbNoteImportToDbJobData;
+	importFBToDb: DbNoteImportToDbJobData;
 	importMastoToDb: DbNoteImportToDbJobData;
 	importPleroToDb: DbNoteImportToDbJobData;
 	importKeyNotesToDb: DbKeyNoteImportToDbJobData;
