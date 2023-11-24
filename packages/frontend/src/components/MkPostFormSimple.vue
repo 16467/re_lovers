@@ -139,7 +139,7 @@ import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
 import { selectFiles } from '@/scripts/select-file.js';
-import { ColdDeviceStorage, defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
+import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -829,7 +829,11 @@ async function post(ev?: MouseEvent) {
 	// plugin
 	if (notePostInterruptors.length > 0) {
 		for (const interruptor of notePostInterruptors) {
-			postData = await interruptor.handler(deepClone(postData));
+			try {
+				postData = await interruptor.handler(deepClone(postData));
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	}
 
@@ -914,7 +918,7 @@ async function post(ev?: MouseEvent) {
 	});
 	textareaEl.style.height = '35px';
 	if (props.updateMode) sound.play('noteEdited');
-	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [10, 20, 10, 20, 10, 20, 60] : '');
+	vibrate(defaultStore.state.vibrateSystem ? [10, 20, 10, 20, 10, 20, 60] : []);
 }
 
 function cancel() {
@@ -1240,6 +1244,7 @@ defineExpose({
 
 .preview {
 	padding: 16px 20px 0 20px;
+  // min-height: 75px;
 	max-height: 150px;
 	overflow: auto;
   margin: 16px 8px;
