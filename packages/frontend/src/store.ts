@@ -625,7 +625,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	expandOnNoteClick: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	displayHeaderNavBarWhenScroll: {
 		where: 'device',
