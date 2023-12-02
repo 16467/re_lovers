@@ -45,3 +45,8 @@ With CherryPick's built in drive, you get cloud storage right in your social med
 ## Documentation
 
 Re:Lovers And CherryPick Documentation can be found at [Misskey Hub](https://misskey-hub.net/), some of the links and graphics above also lead to specific portions of it.
+
+## Special Thanks
+
+### [Sharkey](https://github.com/transfem-org/Sharkey)
+Re:Lovers uses the Mastodon API and some import function code.
