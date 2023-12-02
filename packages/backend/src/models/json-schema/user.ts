@@ -57,6 +57,22 @@ export const packedUserLiteSchema = {
 						type: 'boolean',
 						nullable: false, optional: true,
 					},
+					scale: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					moveX: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					moveY: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					opacity: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
 					url: {
 						type: 'string',
 						format: 'url',
@@ -537,6 +553,18 @@ export const packedMeDetailedOnlySchema = {
 			nullable: false, optional: false,
 		},
 		mutedWords: {
+			type: 'array',
+			nullable: false, optional: false,
+			items: {
+				type: 'array',
+				nullable: false, optional: false,
+				items: {
+					type: 'string',
+					nullable: false, optional: false,
+				},
+			},
+		},
+		hardMutedWords: {
 			type: 'array',
 			nullable: false, optional: false,
 			items: {

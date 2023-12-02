@@ -533,6 +533,10 @@ export type Endpoints = {
         req: TODO;
         res: TODO;
     };
+    'admin/emoji/steal': {
+        req: TODO;
+        res: TODO;
+    };
     'admin/emoji/update': {
         req: TODO;
         res: TODO;
@@ -1593,7 +1597,8 @@ export type Endpoints = {
             injectFeaturedNote?: boolean;
             receiveAnnouncementEmail?: boolean;
             alwaysMarkNsfw?: boolean;
-            mutedWords?: string[][];
+            mutedWords?: (string[] | string)[];
+            hardMutedWords?: (string[] | string)[];
             notificationRecieveConfig?: any;
             emailNotificationTypes?: string[];
             alsoKnownAs?: string[];
@@ -2315,6 +2320,10 @@ export type Endpoints = {
             };
         };
     };
+    'users/stats': {
+        req: TODO;
+        res: TODO;
+    };
     'fetch-rss': {
         req: {
             url: string;
@@ -2581,7 +2590,8 @@ type MeDetailed = UserDetailed & {
     integrations: Record<string, any>;
     isDeleted: boolean;
     isExplorable: boolean;
-    mutedWords: string[][];
+    mutedWords: (string[] | string)[];
+    hardMutedWords: (string[] | string)[];
     notificationRecieveConfig: {
         [notificationType in typeof notificationTypes_2[number]]?: {
             type: 'all';
@@ -3103,6 +3113,10 @@ type UserLite = {
         url: string;
         angle?: number;
         flipH?: boolean;
+        scale?: number;
+        moveX?: number;
+        moveY?: number;
+        opacity?: number;
     }[];
     emojis: {
         name: string;
@@ -3127,9 +3141,9 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 //
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:20:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
-// src/api.types.ts:663:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
-// src/entities.ts:116:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
-// src/entities.ts:637:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/api.types.ts:665:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
+// src/entities.ts:121:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
+// src/entities.ts:642:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

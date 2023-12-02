@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
 	@click="toggleReaction()"
 >
-	<MkReactionIcon :class="$style.icon" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]"/>
+	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]"/>
 	<span :class="$style.count">{{ count }}</span>
 </button>
 </template>
@@ -30,6 +30,7 @@ import { claimAchievement } from '@/scripts/achievements.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
+import * as sound from '@/scripts/sound.js';
 
 const props = defineProps<{
 	reaction: string;
@@ -71,6 +72,10 @@ async function toggleReaction(ev) {
 		});
 		if (confirm.canceled) return;
 
+		if (oldReaction !== props.reaction) {
+			sound.play('reaction');
+		}
+
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count - 1));
 			return;
@@ -87,6 +92,8 @@ async function toggleReaction(ev) {
 			}
 		});
 	} else {
+		sound.play('reaction');
+
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count + 1));
 			return;
@@ -211,7 +218,7 @@ if (!mock) {
 	}
 }
 
-.icon {
+.limitWidth {
 	max-width: 150px;
 }
 

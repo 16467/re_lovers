@@ -426,6 +426,10 @@ export class UserEntityService implements OnModuleInit {
 				id: ud.id,
 				angle: ud.angle || undefined,
 				flipH: ud.flipH || undefined,
+				scale: ud.scale || undefined,
+				moveX: ud.moveX || undefined,
+				moveY: ud.moveY || undefined,
+				opacity: ud.opacity || undefined,
 				url: decorations.find(d => d.id === ud.id)!.url,
 			}))) : [],
 			description: mastoapi ? mastoapi.description : profile ? profile.description : '',
@@ -541,6 +545,7 @@ export class UserEntityService implements OnModuleInit {
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
 				unreadNotificationsCount: notificationsInfo?.unreadCount,
 				mutedWords: profile!.mutedWords,
+				hardMutedWords: profile!.hardMutedWords,
 				mutedInstances: profile!.mutedInstances,
 				mutingNotificationTypes: [], // 後方互換性のため
 				notificationRecieveConfig: profile!.notificationRecieveConfig,
